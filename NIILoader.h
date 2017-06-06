@@ -1,5 +1,29 @@
 
-struct NII_header { //must be 348 byte
+using namespace std;
+
+union ToInt {
+	char c[4];
+	int     i;
+}
+
+union ToShort {
+	char  c[2];
+	short    s;
+}
+
+union ToFloat {
+	char  c[4];
+	float    f;
+}
+
+union ToDouble {
+	char  c[8];
+	double   d;
+}
+
+
+#pragma pack(push, 1)
+struct NII_header_1 { ;//must be 348 byte
 	int	sizeof_hdr	;//0B	4B	Size of the header. Must be 348 (bytes).
 	char	data_type[10]	;//4B	10B	Not used; compatibility with analyze.
 	char	db_name[18]	;//14B	18B	Not used; compatibility with analyze.
@@ -43,5 +67,51 @@ struct NII_header { //must be 348 byte
 	float	srow_z[4]	;//312B	16B	3rd row affine transform.
 	char	intent_name[16]	;//328B	16B	Name or meaning of the data.
 	char	magic[4]	;//344B	4B	Magic string.
-}
+};
+#pragma pack(pop)
+
+
+#pragma pack(push, 1)
+struct NII_header_1 {
+	int	sizeof_hdr	;//0B	4B	Size of the header. Must be 540 (bytes).
+	char	magic[8]	;//4B	8B	Magic string, defining a valid signature.
+	int16_t	data_type	;//12B	2B	Data type.
+	int16_t	bitpix		;//14B	2B	Number of bits per voxel.
+	int64_t	dim[8]		;//16B	64B	Data array dimensions.
+	double	intent_p1	;//80B	8B	1st intent parameter.
+	double	intent_p2	;//88B	8B	2nd intent parameter.
+	double	intent_p3	;//96B	8B	3rd intent parameter.
+	double	pixdim[8]	;//104B	64B	Grid spacings (unit per dimension).
+	int64_t	vox_offset	;//168B	8B	Offset into a .nii file.
+	double	scl_slope	;//176B	8B	Data scaling, slope.
+	double	scl_inter	;//184B	8B	Data scaling, offset.
+	double	cal_max		;//192B	8B	Maximum display intensity.
+	double	cal_min		;//200B	8B	Minimum display intensity.
+	double	slice_duration	;//208B	8B	Time for one slice.
+	double	toffset		;//216B	8B	Time axis shift.
+	int64_t	slice_start	;//224B	8B	First slice index.
+	int64_t	slice_end	;//232B	8B	Last slice index.
+	char	descrip[80]	;//240B	80B	Any text.
+	char	aux_file[24]	;//320B	24B	Auxiliary filename.
+	int	qform_code	;//344B	4B	Use the quaternion fields.
+	int	sform_code	;//348B	4B	Use of the affine fields.
+	double	quatern_b	;//352B	8B	Quaternion b parameter.
+	double	quatern_c	;//360B	8B	Quaternion c parameter.
+	double	quatern_d	;//368B	8B	Quaternion d parameter.
+	double	qoffset_x	;//376B	8B	Quaternion x shift.
+	double	qoffset_y	;//384B	8B	Quaternion y shift.
+	double	qoffset_z	;//392B	8B	Quaternion z shift.
+	double	srow_x[4]	;//400B	32B	1st row affine transform.
+	double	srow_y[4]	;//432B	32B	2nd row affine transform.
+	double	srow_z[4]	;//464B	32B	3rd row affine transform.
+	int	slice_code	;//496B	4B	Slice timing order.
+	int	xyzt_units	;//500B	4B	Units of pixdim[1..4].
+	int	intent_code	;//504B	4B	nifti intent.
+	char	intent_name[16]	;//508B	16B	Name or meaning of the data.
+	char	dim_info	;//524B	1B	Encoding directions.
+	char	unused_str[15]	;//525B	15B	Unused, to be padded with with zeroes.
+};
+#pragma pack(pop)
+
+
 
