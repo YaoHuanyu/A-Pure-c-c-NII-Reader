@@ -1,27 +1,6 @@
 
 using namespace std;
 
-union ToInt {
-	char c[4];
-	int     i;
-}
-
-union ToShort {
-	char  c[2];
-	short    s;
-}
-
-union ToFloat {
-	char  c[4];
-	float    f;
-}
-
-union ToDouble {
-	char  c[8];
-	double   d;
-}
-
-
 #pragma pack(push, 1)
 struct NII_header_1 { ;//must be 348 byte
 	int	sizeof_hdr	;//0B	4B	Size of the header. Must be 348 (bytes).
